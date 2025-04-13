@@ -41,6 +41,8 @@ func main() {
 		fmt.Println("Error:", err)
 		os.Exit(1)
 	}
+	fmt.Println()
+	br.report()
 }
 
 func (b *Brotlifier) brotlify(path string) error {
@@ -57,6 +59,19 @@ func (b *Brotlifier) brotlify(path string) error {
 		}
 		return b.processFile(path)
 	})
+}
+
+func (b *Brotlifier) report() {
+	var ratio float64
+	if b.totalSrc != 0 {
+		ratio = float64(b.totalDst) / float64(b.totalSrc)
+	}
+	fmt.Printf(
+		"Total: %s -> %s   %.0f%%\n",
+		humanize.Bytes(b.totalSrc),
+		humanize.Bytes(b.totalDst),
+		ratio*100,
+	)
 }
 
 func (b *Brotlifier) processFile(path string) error {
@@ -89,7 +104,7 @@ func (b *Brotlifier) processFile(path string) error {
 	dstSize := uint64(len(compressedData.Bytes()))
 
 	var ratio float64
-	if dstSize != 0 {
+	if srcSize != 0 {
 		ratio = float64(dstSize) / float64(srcSize)
 	}
 
