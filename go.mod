@@ -1,4 +1,4 @@
-module git.pavl.uk
+module github.com/pav5000/brotlify
 
 go 1.24.2
 
